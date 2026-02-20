@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Precision Nutrition Research | University of Arizona</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --bg2: #f9f7f4;
+    --bg3: #f2ede6;
+    --orange: #e8621a;
+    --orange2: #f5894e;
+    --orange-light: #fef0e6;
+    --green: #2d6a4f;
+    --green2: #52b788;
+    --green-light: #e8f5ee;
+    --tx: #1a1a1a;
+    --mu: #6b7280;
+    --bo: #e5e0d8;
+    --card: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--tx); font-family: 'Space Grotesk', sans-serif; overflow-x: hidden; font-size: 18px; }
+
+  /* === NAV === */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.2rem 4rem;
+    background: rgba(255,255,255,0.95); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--bo);
+    box-shadow: 0 1px 20px rgba(0,0,0,0.06);
+  }
+  .nav-logo {
+    font-family: 'DM Mono', monospace; font-size: 1rem;
+    color: var(--orange); letter-spacing: 0.15em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .nav-logo span { color: var(--green); }
+  nav ul { display: flex; gap: 2rem; list-style: none; }
+  nav a { color: var(--mu); text-decoration: none; font-size: 0.95rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; transition: color 0.2s; }
+  nav a:hover { color: var(--orange); }
+
+  /* === HERO === */
+  .hero {
+    position: relative; z-index: 1; min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center; padding: 9rem 4rem 5rem; gap: 4rem;
+    background: linear-gradient(135deg, #fff9f5 0%, #f0f7f3 100%);
+    overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: -100px; right: -100px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(232,98,26,0.08) 0%, transparent 70%);
+    border-radius: 50%; pointer-events: none;
+  }
+  .hero::after {
+    content: ''; position: absolute; bottom: -150px; left: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(45,106,79,0.08) 0%, transparent 70%);
+    border-radius: 50%; pointer-events: none;
+  }
+  .hero-left { max-width: 640px; position: relative; z-index: 2; }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--orange);
+    letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 2rem;
+    background: var(--orange-light); padding: 0.5rem 1rem; border-radius: 2px;
+    border-left: 3px solid var(--orange);
+  }
+  h1 { font-size: clamp(2.4rem, 4vw, 3.8rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 1.5rem; color: #111; }
+  .grad-o { background: linear-gradient(135deg, var(--orange), var(--orange2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .grad-g { background: linear-gradient(135deg, var(--green), var(--green2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero-sub { color: var(--mu); font-size: 1.2rem; line-height: 1.75; margin-bottom: 2.5rem; max-width: 540px; }
+  .ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-o {
+    padding: 1rem 2.2rem; background: var(--orange); color: #fff; border: none; border-radius: 3px;
+    font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: 0.04em;
+    cursor: pointer; text-decoration: none; display: inline-block; transition: background 0.2s, transform 0.2s;
+  }
+  .btn-o:hover { background: var(--orange2); transform: translateY(-2px); }
+  .btn-g {
+    padding: 1rem 2.2rem; background: transparent; color: var(--green);
+    border: 2px solid var(--green); border-radius: 3px; font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem; font-weight: 700; cursor: pointer; text-decoration: none;
+    display: inline-block; transition: all 0.2s;
+  }
+  .btn-g:hover { background: var(--green); color: #fff; transform: translateY(-2px); }
+
+  /* === HERO RIGHT === */
+  .hero-right { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 2rem; }
+  .food-mosaic { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; width: 100%; max-width: 480px; }
+  .food-img { border-radius: 4px; overflow: hidden; position: relative; }
+  .food-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s; }
+  .food-img:hover img { transform: scale(1.05); }
+  .food-img:nth-child(1) { grid-row: 1 / 3; height: 320px; }
+  .food-img:nth-child(2) { height: 150px; }
+  .food-img:nth-child(3) { height: 150px; }
+  .food-img .overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
+    display: flex; align-items: flex-end; padding: 0.9rem;
+  }
+  .overlay-label {
+    font-family: 'DM Mono', monospace; font-size: 0.72rem; color: white;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    background: rgba(0,0,0,0.3); padding: 0.25rem 0.6rem; border-radius: 2px;
+  }
+
+  /* === RESEARCHER STRIP === */
+  .researcher-strip {
+    display: flex; align-items: center; gap: 1.8rem;
+    background: white; border: 1px solid var(--bo); border-radius: 4px;
+    padding: 1.4rem 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    width: 100%; max-width: 480px;
+  }
+  .res-photo { width: 120px; height: 120px; border-radius: 50%; overflow: hidden; flex-shrink: 0; border: 4px solid var(--orange); }
+  .res-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+  .res-info { display: flex; flex-direction: column; gap: 0.3rem; }
+  .res-name { font-size: 1.15rem; font-weight: 700; color: #111; line-height: 1.2; }
+  .res-role { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--orange); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; }
+  .res-lab { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--green); letter-spacing: 0.06em; font-weight: 600; }
+  .res-divider { width: 32px; height: 2px; background: var(--bo); margin: 0.15rem 0; }
+  .res-school { font-size: 0.9rem; color: #111; font-weight: 600; }
+  .res-college { font-size: 0.78rem; color: var(--mu); line-height: 1.4; }
+  .res-dept { font-size: 0.78rem; color: var(--green); font-weight: 600; line-height: 1.4; }
+
+  /* === STAT BAR === */
+  .stat-bar { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(3, 1fr); background: var(--green); }
+  .stat-item { padding: 3rem 2rem; text-align: center; border-right: 1px solid rgba(255,255,255,0.15); }
+  .stat-item:last-child { border-right: none; }
+  .stat-num { font-size: 3.5rem; font-weight: 700; color: #fff; display: block; }
+  .stat-label { color: rgba(255,255,255,0.8); font-size: 1rem; margin-top: 0.4rem; line-height: 1.5; }
+
+  /* === SECTIONS === */
+  section { position: relative; z-index: 1; }
+  .inner { max-width: 1200px; margin: 0 auto; padding: 6rem 4rem; }
+  .sec-label {
+    font-family: 'DM Mono', monospace; font-size: 0.9rem; color: var(--orange);
+    letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.2rem;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .sec-label::after { content: ''; flex: 1; height: 2px; background: var(--orange-light); max-width: 100px; }
+  h2 { font-size: clamp(2.2rem, 3.5vw, 3rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 1.4rem; line-height: 1.15; color: #111; }
+  .sec-desc { color: var(--mu); font-size: 1.15rem; line-height: 1.8; max-width: 720px; margin-bottom: 3.5rem; }
+  .alt { background: var(--bg2); }
+  .alt2 { background: var(--bg3); }
+
+  /* === PROBLEM SECTION === */
+  .problem-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .problem-image { position: relative; border-radius: 4px; overflow: hidden; height: 480px; }
+  .problem-image img { width: 100%; height: 100%; object-fit: cover; }
+  .problem-image .img-caption {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(45,106,79,0.9), transparent);
+    padding: 2.5rem 2rem 1.5rem; color: white; font-size: 1rem; line-height: 1.6;
+  }
+  .img-caption strong { display: block; font-size: 1.2rem; margin-bottom: 0.4rem; }
+  .prob-cards { display: flex; flex-direction: column; gap: 1.2rem; }
+  .prob-card {
+    background: white; border: 1px solid var(--bo); padding: 1.8rem;
+    border-radius: 4px; border-left: 5px solid var(--orange);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04); transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .prob-card:hover { transform: translateX(4px); box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+  .prob-card:nth-child(2) { border-left-color: var(--green); }
+  .prob-card:nth-child(3) { border-left-color: var(--orange2); }
+  .prob-stat { font-family: 'DM Mono', monospace; font-size: 1.7rem; font-weight: 600; color: var(--orange); display: block; margin-bottom: 0.3rem; }
+  .prob-card:nth-child(2) .prob-stat { color: var(--green); }
+  .prob-title { font-size: 1.05rem; font-weight: 700; color: #111; margin-bottom: 0.5rem; }
+  .prob-text { font-size: 0.95rem; color: var(--mu); line-height: 1.7; }
+
+  /* === TABLE === */
+  table { width: 100%; border-collapse: separate; border-spacing: 0 5px; }
+  thead th {
+    font-family: 'DM Mono', monospace; font-size: 0.85rem; color: white;
+    letter-spacing: 0.1em; text-transform: uppercase; padding: 1.2rem 1.8rem;
+    text-align: left; background: var(--green);
+  }
+  thead th:first-child { border-radius: 4px 0 0 4px; }
+  thead th:last-child { border-radius: 0 4px 4px 0; }
+  tbody tr { background: white; box-shadow: 0 1px 4px rgba(0,0,0,0.05); transition: background 0.2s; }
+  tbody tr:hover { background: var(--green-light); }
+  tbody td { padding: 1.3rem 1.8rem; font-size: 1rem; color: var(--mu); }
+  tbody td:first-child { color: #111; font-weight: 600; border-left: 4px solid var(--orange); }
+  .badge { display: inline-block; padding: 0.3rem 0.9rem; background: rgba(232,98,26,0.1); color: var(--orange); border-radius: 2px; font-size: 0.85rem; font-family: 'DM Mono', monospace; font-weight: 600; }
+
+  /* === OBJECTIVES GRID === */
+  .aims-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.8rem; }
+  .aim-card {
+    position: relative; background: white; border: 1px solid var(--bo);
+    border-radius: 4px; padding: 2.8rem 2.2rem; overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04); transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .aim-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); }
+  .aim-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, var(--orange), var(--green)); }
+  .aim-num-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--orange-light); color: var(--orange);
+    font-family: 'DM Mono', monospace; font-size: 0.9rem; font-weight: 700; margin-bottom: 1.2rem;
+  }
+  .aim-card:nth-child(2) .aim-num-badge { background: var(--green-light); color: var(--green); }
+  .aim-card:nth-child(3) .aim-num-badge { background: var(--orange-light); color: var(--orange2); }
+  .aim-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.9rem; color: #111; }
+  .aim-body { font-size: 0.97rem; color: var(--mu); line-height: 1.72; }
+
+  /* === METHODOLOGY WORKFLOW === */
+  .workflow-intro {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; margin-bottom: 4rem;
+  }
+  .workflow-intro-img { position: relative; border-radius: 4px; overflow: hidden; height: 400px; }
+  .workflow-intro-img img { width: 100%; height: 100%; object-fit: cover; }
+  .workflow-intro-img .img-caption {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(232,98,26,0.88), transparent);
+    padding: 2rem 1.5rem 1.2rem; color: white;
+  }
+  .workflow-intro-img .img-caption strong { display: block; font-size: 1.1rem; margin-bottom: 0.3rem; }
+  .workflow-intro-img .img-caption span { font-size: 0.95rem; opacity: 0.9; line-height: 1.5; }
+  .workflow-intro-text { display: flex; flex-direction: column; justify-content: center; gap: 1.2rem; }
+  .workflow-intro-text p { font-size: 1.1rem; color: var(--mu); line-height: 1.8; }
+
+  /* The main vertical flow */
+  .workflow { position: relative; max-width: 900px; margin: 0 auto; }
+
+  /* Vertical spine line */
+  .workflow::before {
+    content: '';
+    position: absolute; left: 50%; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, var(--orange), var(--green));
+    transform: translateX(-50%);
+    z-index: 0;
+  }
+
+  .wf-row {
+    display: grid; grid-template-columns: 1fr 80px 1fr;
+    align-items: center; margin-bottom: 1.5rem; position: relative; z-index: 1;
+  }
+
+  /* Left-side cards */
+  .wf-card-left {
+    background: white; border: 1px solid var(--bo); border-radius: 4px;
+    padding: 2rem; box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+    border-right: 5px solid var(--orange);
+    text-align: right;
+  }
+  /* Right-side cards */
+  .wf-card-right {
+    background: white; border: 1px solid var(--bo); border-radius: 4px;
+    padding: 2rem; box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+    border-left: 5px solid var(--green);
+    text-align: left;
+  }
+  .wf-card-full {
+    grid-column: 1 / 4;
+    background: white; border: 1px solid var(--bo); border-radius: 4px;
+    padding: 2rem 2.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    border-top: 5px solid var(--orange);
+    text-align: left;
+  }
+  .wf-card-full.green-top { border-top-color: var(--green); }
+
+  .wf-node {
+    display: flex; align-items: center; justify-content: center;
+    width: 56px; height: 56px; border-radius: 50%;
+    background: white; border: 3px solid var(--orange);
+    font-size: 1.3rem; margin: 0 auto;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    z-index: 2; position: relative;
+  }
+  .wf-node.green { border-color: var(--green); }
+  .wf-node.both {
+    background: linear-gradient(135deg, var(--orange-light), var(--green-light));
+    border-color: var(--green);
+  }
+
+  .wf-tag {
+    display: inline-block; font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    letter-spacing: 0.12em; text-transform: uppercase; padding: 0.3rem 0.7rem;
+    border-radius: 2px; margin-bottom: 0.7rem;
+  }
+  .wf-tag.orange { background: var(--orange-light); color: var(--orange); }
+  .wf-tag.green { background: var(--green-light); color: var(--green); }
+
+  .wf-title { font-size: 1.05rem; font-weight: 700; color: #111; margin-bottom: 0.5rem; line-height: 1.3; }
+  .wf-text { font-size: 0.92rem; color: var(--mu); line-height: 1.68; }
+
+  /* Sub-chips for databases etc */
+  .wf-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.9rem; }
+  .wf-chip {
+    font-family: 'DM Mono', monospace; font-size: 0.72rem; padding: 0.25rem 0.65rem;
+    border-radius: 2px; border: 1px solid var(--bo); color: var(--mu); background: var(--bg2);
+  }
+  .wf-chip.o { border-color: var(--orange); color: var(--orange); background: var(--orange-light); }
+  .wf-chip.g { border-color: var(--green); color: var(--green); background: var(--green-light); }
+
+  /* Output card special style */
+  .wf-output {
+    background: linear-gradient(135deg, var(--orange-light), var(--green-light));
+    border: 2px solid var(--green); border-radius: 4px;
+    padding: 2rem 2.5rem; text-align: center;
+    box-shadow: 0 8px 28px rgba(45,106,79,0.15);
+    grid-column: 1 / 4;
+  }
+  .wf-output .wf-title { font-size: 1.2rem; color: var(--green); }
+  .wf-output .wf-text { font-size: 1rem; }
+
+  /* Down arrow between rows */
+  .wf-down { text-align: center; grid-column: 2; margin: -0.5rem 0; }
+  .wf-down svg { width: 24px; }
+
+  /* Connector label */
+  .wf-connector {
+    grid-column: 1 / 4; text-align: center; padding: 0.5rem 0;
+  }
+  .wf-connector span {
+    font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--mu);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    background: var(--bg2); padding: 0.3rem 1rem; border-radius: 20px;
+    border: 1px solid var(--bo);
+  }
+
+  /* === STATUS === */
+  .status-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.8rem; }
+  .status-col {
+    background: white; border: 1px solid var(--bo); border-radius: 4px;
+    padding: 2.2rem; box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  .status-col h3 {
+    font-size: 0.9rem; font-family: 'DM Mono', monospace; letter-spacing: 0.12em;
+    text-transform: uppercase; margin-bottom: 1.5rem; padding-bottom: 0.8rem;
+    border-bottom: 2px solid var(--bo);
+  }
+  .done h3 { color: var(--green); border-bottom-color: var(--green); }
+  .inprog h3 { color: var(--orange); border-bottom-color: var(--orange); }
+  .next h3 { color: var(--mu); border-bottom-color: var(--bo); }
+  .s-item { display: flex; align-items: flex-start; gap: 0.8rem; margin-bottom: 1.1rem; font-size: 0.97rem; line-height: 1.55; color: var(--mu); }
+  .s-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 0.4rem; }
+  .done .s-dot { background: var(--green); }
+  .inprog .s-dot { background: var(--orange); animation: pulse 2s infinite; }
+  .next .s-dot { background: #ccc; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  /* === OUTCOMES === */
+  .outcomes-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.8rem; }
+  .outcome-card {
+    background: white; border: 1px solid var(--bo); padding: 2.2rem;
+    border-radius: 4px; display: flex; gap: 1.4rem; align-items: flex-start;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04); transition: transform 0.2s;
+  }
+  .outcome-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,0.09); }
+  .oc-icon {
+    width: 54px; height: 54px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--orange-light); border-radius: 3px; font-size: 1.5rem;
+  }
+  .outcome-card:nth-child(even) .oc-icon { background: var(--green-light); }
+  .oc-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; color: #111; }
+  .oc-text { font-size: 0.95rem; color: var(--mu); line-height: 1.7; }
+
+  /* === FOOD STRIP === */
+  .food-strip { display: grid; grid-template-columns: repeat(5, 1fr); height: 220px; overflow: hidden; }
+  .food-strip-item { overflow: hidden; position: relative; }
+  .food-strip-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+  .food-strip-item:hover img { transform: scale(1.1); }
+  .food-strip-item .strip-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 40%, rgba(45,106,79,0.6));
+    opacity: 0; transition: opacity 0.3s; display: flex; align-items: flex-end; padding: 0.8rem;
+  }
+  .food-strip-item:hover .strip-overlay { opacity: 1; }
+  .strip-label { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: white; letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* === FOOTER === */
+  footer {
+    background: #111; position: relative; z-index: 1;
+    padding: 3.5rem 4rem; display: flex; justify-content: space-between;
+    align-items: center; flex-wrap: wrap; gap: 1rem;
+  }
+  .f-name { font-size: 1.05rem; font-weight: 700; color: white; }
+  .f-meta { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: rgba(255,255,255,0.45); margin-top: 0.3rem; }
+  .f-right { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: rgba(255,255,255,0.45); text-align: right; }
+  .f-accent { color: var(--orange); }
+
+  /* === SCROLL ANIM === */
+  .fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
+  .fade-up.vis { opacity: 1; transform: none; }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 960px) {
+    nav { padding: 1rem 1.5rem; }
+    nav ul { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 8rem 1.5rem 3rem; gap: 2.5rem; }
+    .stat-bar { grid-template-columns: 1fr; }
+    .inner { padding: 4rem 1.5rem; }
+    .problem-layout, .aims-grid, .status-grid, .outcomes-grid, .workflow-intro { grid-template-columns: 1fr; }
+    .workflow::before { left: 28px; transform: none; }
+    .wf-row { grid-template-columns: 1fr; gap: 0.8rem; }
+    .wf-node { display: none; }
+    .wf-card-left { text-align: left; border-right: none; border-left: 5px solid var(--orange); }
+    .wf-card-full, .wf-output { grid-column: 1; }
+    .wf-connector { grid-column: 1; }
+    .food-strip { grid-template-columns: repeat(3, 1fr); height: 160px; }
+    .food-strip-item:nth-child(n+4) { display: none; }
+    footer { padding: 2.5rem 1.5rem; flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">// Precision<span>Nutrition</span>.AI</span>
+  <ul>
+    <li><a href="#problem">Problem</a></li>
+    <li><a href="#method">Method</a></li>
+    <li><a href="#objectives">Objectives</a></li>
+    <li><a href="#methodology">Methodology</a></li>
+    <li><a href="#status">Status</a></li>
+    <li><a href="#outcomes">Outcomes</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <span class="hero-tag">Graduate Research · Nutritional Sciences · UArizona</span>
+    <h1>Transforming Dietary Assessment Through <span class="grad-o">Conversational AI</span> & <span class="grad-g">Precision Nutrition</span></h1>
+    <p class="hero-sub">A two-phase research framework combining voice-enabled dietary recall with retrieval-augmented generation — eliminating systematic human bias and delivering evidence-based nutrition guidance at scale.</p>
+    <div class="ctas">
+      <a href="#methodology" class="btn-o">Explore the Methodology</a>
+      <a href="#objectives" class="btn-g">View Research Objectives</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="food-mosaic">
+      <div class="food-img">
+        <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=80" alt="Healthy vegetables">
+        <div class="overlay"><span class="overlay-label">Dietary Assessment</span></div>
+      </div>
+      <div class="food-img">
+        <img src="https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=400&q=80" alt="Carrots">
+        <div class="overlay"><span class="overlay-label">Phase 1 Data</span></div>
+      </div>
+      <div class="food-img">
+        <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400&q=80" alt="Salad bowl">
+        <div class="overlay"><span class="overlay-label">Personalized Plans</span></div>
+      </div>
+    </div>
+    <div class="researcher-strip">
+      <div class="res-photo">
+        <img src="C:\Users\User\Downloads\IMG-20260119-WA0062.jpg" alt="Grace Amaning-Kwarteng">
+      </div>
+      <div class="res-info">
+        <div class="res-name">Grace Amaning-Kwarteng</div>
+        <div class="res-role">Graduate Researcher · <span style="color:var(--green)">Krishnan Lab</span></div>
+        <div class="res-divider"></div>
+        <div class="res-school">University of Arizona</div>
+        <div class="res-college">College of Agriculture, Life & Environmental Sciences</div>
+        <div class="res-dept">Department of Nutritional Sciences & Wellness</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STAT BAR -->
+<div class="stat-bar">
+  <div class="stat-item">
+    <span class="stat-num">74%</span>
+    <span class="stat-label">of global deaths linked to non-communicable diseases (WHO, 2024)</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">50%</span>
+    <span class="stat-label">maximum under-reporting of energy intake in conventional assessment</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">41M</span>
+    <span class="stat-label">people die annually from diet-related chronic conditions worldwide</span>
+  </div>
+</div>
+
+<!-- FOOD STRIP -->
+<div class="food-strip">
+  <div class="food-strip-item">
+    <img src="https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&q=80" alt="Carrots">
+    <div class="strip-overlay"><span class="strip-label">Potatoes</span></div>
+  </div>
+  <div class="food-strip-item">
+    <img src="https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&q=80" alt="Greens">
+    <div class="strip-overlay"><span class="strip-label">Greens</span></div>
+  </div>
+  <div class="food-strip-item">
+    <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400&q=80" alt="Meal prep">
+    <div class="strip-overlay"><span class="strip-label">Meal Planning</span></div>
+  </div>
+  <div class="food-strip-item">
+    <img src="https://images.unsplash.com/photo-1505576399279-565b52d4ac71?w=400&q=80" alt="Vegetables">
+    <div class="strip-overlay"><span class="strip-label">Fresh Produce</span></div>
+  </div>
+  <div class="food-strip-item">
+    <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400&q=80" alt="Healthy food">
+    <div class="strip-overlay"><span class="strip-label">Nutrition</span></div>
+  </div>
+</div>
+
+<!-- SECTION 01: PROBLEM -->
+<section id="problem">
+  <div class="inner">
+    <div class="sec-label">01 — The Problem</div>
+    <h2>Why Current Dietary Science Is <span class="grad-o">Failing Us</span></h2>
+    <div class="problem-layout fade-up">
+      <div class="problem-image">
+        <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&q=80" alt="Research and data collection">
+        <div class="img-caption">
+          <strong>The Measurement Crisis</strong>
+          What people eat is the most important dietary variable — and the hardest to measure accurately. Social pressure, memory failure, and interview dynamics all conspire to corrupt the data.
+        </div>
+      </div>
+      <div class="prob-cards">
+        <div class="prob-card">
+          <span class="prob-stat">10–50%</span>
+          <div class="prob-title">Systematic Under-Reporting</div>
+          <div class="prob-text">Participants selectively omit "unhealthy" foods when reporting to human interviewers. In obese populations, reported intake deviates from measured intake by 40–50%. This is structured, directional bias that invalidates downstream inference.</div>
+        </div>
+        <div class="prob-card">
+          <span class="prob-stat">3 core methods</span>
+          <div class="prob-title">Flawed Assessment Tools</div>
+          <div class="prob-text">24-hour recalls, food diaries, and FFQs each carry known structural limitations. Even the gold-standard USDA Automated Multiple-Pass Method cannot eliminate social desirability bias when a human interviewer is present.</div>
+        </div>
+        <div class="prob-card">
+          <span class="prob-stat">~Zero</span>
+          <div class="prob-title">Scalable Personalization</div>
+          <div class="prob-text">Generic guidelines (MyPlate, DASH) produce low adherence. Dietitian-led personalization is effective but unscalable. Current AI tools hallucinate nutritional facts and lack grounding in peer-reviewed evidence.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 02: METHODOLOGICAL CONTEXT -->
+<section class="alt" id="method">
+  <div class="inner">
+    <div class="sec-label">02 — Methodological Context</div>
+    <h2>The <span class="grad-g">Foundational Limitation</span> of Nutrition Research</h2>
+    <p class="sec-desc">Every major dietary assessment method carries documented, persistent limitations that undermine both research validity and clinical utility. The root cause is consistent: human judgment contaminates the measurement when participants perceive social evaluation.</p>
+    <table class="fade-up">
+      <thead>
+        <tr>
+          <th>Assessment Method</th>
+          <th>Primary Structural Limitation</th>
+          <th>Bias Classification</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>24-Hour Dietary Recall</td>
+          <td>Memory-dependent; significant interviewer effect on reporting completeness</td>
+          <td><span class="badge">Social desirability</span></td>
+        </tr>
+        <tr>
+          <td>Food Diary / Prospective Record</td>
+          <td>High participant burden; reactive dietary modification during the recording period</td>
+          <td><span class="badge">Reactivity bias</span></td>
+        </tr>
+        <tr>
+          <td>Food Frequency Questionnaire</td>
+          <td>Cognitive overload; systematic portion estimation error across food categories</td>
+          <td><span class="badge">Recall bias</span></td>
+        </tr>
+        <tr>
+          <td>USDA AMPM (Gold Standard)</td>
+          <td>Cannot resolve social desirability bias inherent to human-administered recall</td>
+          <td><span class="badge">Persistent bias</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SECTION 03: RESEARCH OBJECTIVES -->
+<section id="objectives">
+  <div class="inner">
+    <div class="sec-label">03 — Research Objectives</div>
+    <h2>What This Research <span class="grad-o">Sets Out to Do</span></h2>
+    <p class="sec-desc">Three integrated aims address both the data quality problem and the personalization gap — progressing from tool development through validation to a full mixed-methods pilot evaluation of the complete integrated system.</p>
+    <div class="aims-grid fade-up">
+      <div class="aim-card">
+        <div class="aim-num-badge">01</div>
+        <div class="aim-title">Conversational Agent Development & Validation</div>
+        <div class="aim-body">Adapt and extend Intake24 with a voice-enabled conversational agent embodied as a food character. Evaluate its effect on dietary recall completeness and perceived social judgment versus standard Intake24. Primary outcome: measurable reduction in social desirability bias via validated instruments and biomarker comparison.</div>
+      </div>
+      <div class="aim-card">
+        <div class="aim-num-badge">02</div>
+        <div class="aim-title">RAG System Construction & Validation</div>
+        <div class="aim-body">Build and validate a Retrieval-Augmented Generation system integrating ABCD user data, USDA FoodData Central, Open Food Facts, TheMealDB, ProteinNAP, and vectorized PubMed literature for generating personalized 7-day cyclic meal plans. Evaluate accuracy, citation quality, and hallucination rate against expert comparator plans.</div>
+      </div>
+      <div class="aim-card">
+        <div class="aim-num-badge">03</div>
+        <div class="aim-title">Integrated System Pilot Evaluation</div>
+        <div class="aim-body">Conduct a mixed-methods pilot study evaluating the complete integrated system end-to-end. Outcomes include: System Usability Scale scores, perceived judgment measures, meal plan adherence at 2 and 4 weeks, relevant dietary biomarkers, and qualitative experience via structured interviews.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 04: METHODOLOGY (WORKFLOW) -->
+<section class="alt2" id="methodology">
+  <div class="inner">
+    <div class="sec-label">04 — Methodology</div>
+    <h2>The Research <span class="grad-g">Workflow</span> in Detail</h2>
+
+    <div class="workflow-intro fade-up">
+      <div class="workflow-intro-img">
+        <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80" alt="Research workflow">
+        <div class="img-caption">
+          <strong>A Two-Phase End-to-End System</strong>
+          <span>Phase 1 captures debiased dietary data via a voice-enabled conversational agent. Phase 2 converts that data into evidence-grounded personalized meal plans using a RAG model hosted on Open Scholar.</span>
+        </div>
+      </div>
+      <div class="workflow-intro-text">
+        <p>The methodology is structured as two connected phases. The <strong style="color:var(--orange)">D component of ABCD data</strong> (Dietary intake) is captured in Phase 1 through an adapted Intake24 platform with a novel voice interface. The full <strong style="color:var(--green)">ABCD profile</strong> — Anthropometric, Biochemical, Clinical, and Dietary data — then feeds Phase 2, where a RAG model generates personalized, evidence-based cyclic meal plans.</p>
+        <p>Every output is grounded in peer-reviewed evidence retrieved from a curated knowledge base, ensuring recommendations are traceable, accurate, and free from AI hallucination.</p>
+      </div>
+    </div>
+
+    <!-- THE WORKFLOW DIAGRAM -->
+    <div class="workflow fade-up">
+
+      <!-- STEP 1: USER INPUT -->
+      <div class="wf-row">
+        <div class="wf-card-left">
+          <span class="wf-tag orange">Input · Phase 1</span>
+          <div class="wf-title">User ABCD Data Collection</div>
+          <div class="wf-text">The participant enters the system with their full clinical profile: Anthropometric measures (height, weight, BMI), Biochemical markers (labs, biomarkers), Clinical conditions, and Dietary history — the ABCD framework.</div>
+        </div>
+        <div class="wf-node">👤</div>
+        <div style="opacity:0; pointer-events:none;"></div>
+      </div>
+
+      <div class="wf-row">
+        <div class="wf-connector"><span>↓ The D (Dietary) component is routed to Phase 1 voice intake</span></div>
+      </div>
+
+      <!-- STEP 2: PHASE 1 -->
+      <div class="wf-row">
+        <div style="opacity:0; pointer-events:none;"></div>
+        <div class="wf-node">🎙️</div>
+        <div class="wf-card-right">
+          <span class="wf-tag orange">Phase 1 · Voice-Enabled Dietary Recall</span>
+          <div class="wf-title">Intake24 + Conversational Agent ("The Potato")</div>
+          <div class="wf-text">The dietary component is captured via an adapted Intake24 platform with a voice-enabled conversational layer. A non-human food character (the "Potato") conducts the 24-hour dietary recall. Removing the human interviewer reduces social desirability bias — participants report more honestly and completely. Whisper API transcribes speech; a fine-tuned NLU model extracts food entities and quantities.</div>
+          <div class="wf-chips">
+            <span class="wf-chip o">Intake24</span>
+            <span class="wf-chip o">Whisper API</span>
+            <span class="wf-chip o">Fine-tuned NLU</span>
+            <span class="wf-chip o">Dialogflow / Rasa</span>
+            <span class="wf-chip o">Embodied Agent Design</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="wf-row">
+        <div class="wf-connector"><span>↓ Structured dietary data merges with full ABCD profile</span></div>
+      </div>
+
+      <!-- STEP 3: ABCD INTO RAG -->
+      <div class="wf-row">
+        <div class="wf-card-left">
+          <span class="wf-tag green">Phase 2 · Input</span>
+          <div class="wf-title">Full ABCD Profile Enters the RAG Model</div>
+          <div class="wf-text">The complete user profile — anthropometric data, biochemical markers, clinical conditions, and Phase 1 dietary recall output — is packaged as the query input to the RAG system. This rich personalization context drives retrieval specificity and generation accuracy.</div>
+          <div class="wf-chips">
+            <span class="wf-chip g">Anthropometric</span>
+            <span class="wf-chip g">Biochemical</span>
+            <span class="wf-chip g">Clinical</span>
+            <span class="wf-chip g">Dietary (Phase 1)</span>
+          </div>
+        </div>
+        <div class="wf-node green">📋</div>
+        <div style="opacity:0; pointer-events:none;"></div>
+      </div>
+
+      <div class="wf-row">
+        <div class="wf-connector"><span>↓ User query triggers retrieval across the knowledge base</span></div>
+      </div>
+
+      <!-- STEP 4: OPEN SCHOLAR + KNOWLEDGE BASE -->
+      <div class="wf-row">
+        <div style="opacity:0; pointer-events:none;"></div>
+        <div class="wf-node both">🔍</div>
+        <div class="wf-card-right">
+          <span class="wf-tag green">Phase 2 · Retrieval</span>
+          <div class="wf-title">RAG Model on Open Scholar — Knowledge Base Retrieval</div>
+          <div class="wf-text">The RAG model is hosted on Open Scholar, which has been pre-loaded with a rich, curated knowledge base. Vector similarity search retrieves the most relevant evidence and nutritional data for the specific user profile. Retrieval spans five source categories simultaneously:</div>
+          <div class="wf-chips">
+            <span class="wf-chip g">PubMed Research Papers</span>
+            <span class="wf-chip g">USDA FoodData Central</span>
+            <span class="wf-chip g">Open Food Facts</span>
+            <span class="wf-chip g">TheMealDB</span>
+            <span class="wf-chip g">ProteinNAP</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="wf-row">
+        <div class="wf-connector"><span>↓ Retrieved evidence + user context fed to generation layer</span></div>
+      </div>
+
+      <!-- STEP 5: GENERATION -->
+      <div class="wf-row">
+        <div class="wf-card-left">
+          <span class="wf-tag green">Phase 2 · Generation</span>
+          <div class="wf-title">Evidence-Based Meal Plan Generation</div>
+          <div class="wf-text">The LLM generation layer uses retrieved evidence alongside the user's ABCD profile to synthesize a personalized meal plan. Because every recommendation is grounded in retrieved, verified sources — not LLM parametric memory — hallucination is eliminated and every claim is traceable back to a specific paper or food database entry.</div>
+          <div class="wf-chips">
+            <span class="wf-chip g">RAG Architecture</span>
+            <span class="wf-chip g">Vector Embeddings</span>
+            <span class="wf-chip g">Grounded Generation</span>
+            <span class="wf-chip g">Citation Provenance</span>
+          </div>
+        </div>
+        <div class="wf-node green">🤖</div>
+        <div style="opacity:0; pointer-events:none;"></div>
+      </div>
+
+      <div class="wf-row">
+        <div class="wf-connector"><span>↓ Final personalized output delivered to user</span></div>
+      </div>
+
+      <!-- STEP 6: OUTPUT -->
+      <div class="wf-row">
+        <div class="wf-output">
+          <div style="font-size:2rem; margin-bottom:0.8rem;">🥗</div>
+          <span class="wf-tag green" style="margin-bottom:1rem; display:inline-block;">Output</span>
+          <div class="wf-title">Personalized 7-Day Cyclic Meal Plan</div>
+          <div class="wf-text" style="max-width:640px; margin:0.8rem auto 1.2rem;">A fully personalized cyclic meal plan tailored to the user's health conditions, cultural context, dietary preferences, and budget — with every recommendation supported by cited, peer-reviewed evidence from PubMed and verified nutritional data from USDA and partner databases.</div>
+          <div class="wf-chips" style="justify-content:center;">
+            <span class="wf-chip g">Personalized to ABCD profile</span>
+            <span class="wf-chip g">Culturally contextual</span>
+            <span class="wf-chip g">Budget-aware</span>
+            <span class="wf-chip g">Fully cited</span>
+            <span class="wf-chip g">7-day cyclic structure</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end .workflow -->
+  </div>
+</section>
+
+<!-- SECTION 05: CURRENT STATUS -->
+<section id="status">
+  <div class="inner">
+    <div class="sec-label">05 — Current Status</div>
+    <h2>Where the <span class="grad-o">Research Stands</span></h2>
+    <p class="sec-desc">The project is in active development across both phases. Core data infrastructure is complete; the conversational agent and full RAG pipeline integration are in progress.</p>
+    <div class="status-grid fade-up">
+      <div class="status-col done">
+        <h3>✓ Completed</h3>
+        <div class="s-item"><span class="s-dot"></span>Intake24 cloned and running locally</div>
+        <div class="s-item"><span class="s-dot"></span>Connected to the USDA FoodData Central Database through an API key</div>
+        <div class="s-item"><span class="s-dot"></span>Open Food Facts, TheMealDB & ProteinNAP (recipe dataabases) setup and ready for integration</div>
+        <div class="s-item"><span class="s-dot"></span>Biotracker component built to collect ABCD data</div>
+        <div class="s-item"><span class="s-dot"></span>HIPPA Compliant database set up to secure user's iinformation</div>
+      </div>
+      <div class="status-col inprog">
+        <h3>⟳ In Progress</h3>
+        <div class="s-item"><span class="s-dot"></span>Conversational agent development (Cloning existing open source frameworks like Chatterbox to see how that functions)</div>
+        <div class="s-item"><span class="s-dot"></span>Cloning existing open source RAG models like Open Scholar to work for this tool</div>
+        <div class="s-item"><span class="s-dot"></span>Synthesizing information from case studies that contain ABCD data to test the platform build to far</div>
+      </div>
+      <div class="status-col next">
+        <h3>→ Next 3–6 Months</h3>
+        <div class="s-item"><span class="s-dot"></span>Complete Phase 1 prototype and usability evaluation</div>
+        <div class="s-item"><span class="s-dot"></span>Finalize Phase 2 RAG pipeline end-to-end on Open Scholar</div>
+        <div class="s-item"><span class="s-dot"></span>Submit IRB protocol for formal evaluation studies</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 06: EXPECTED OUTCOMES -->
+<section class="alt" id="outcomes">
+  <div class="inner">
+    <div class="sec-label">06 — Expected Outcomes</div>
+    <h2>What This Research <span class="grad-g">Will Produce</span></h2>
+    <p class="sec-desc">Beyond the immediate study findings, this work is designed to generate durable, reusable contributions — validated methods, open-source tools, and policy-relevant evidence — that the broader research and public health community can build upon.</p>
+    <div class="outcomes-grid fade-up">
+      <div class="outcome-card">
+        <div class="oc-icon">🔬</div>
+        <div>
+          <div class="oc-title">Methodological Innovation</div>
+          <div class="oc-text">A validated approach to reducing social desirability bias in dietary assessment through embodied, non-human conversational agents — transferable across nutrition research, public health surveillance, and behavioral science wherever human interviewer effects contaminate data quality.</div>
+        </div>
+      </div>
+      <div class="outcome-card">
+        <div class="oc-icon">⚙️</div>
+        <div>
+          <div class="oc-title">Open-Source RAG Architecture</div>
+          <div class="oc-text">A fully documented, open-source RAG system for evidence-based nutrition guidance that researchers, clinicians, and public health practitioners can adapt and deploy — a safety-first framework that explicitly prevents hallucination and addresses eating disorder risk in AI nutrition tools.</div>
+        </div>
+      </div>
+      <div class="outcome-card">
+        <div class="oc-icon">📍</div>
+        <div>
+          <div class="oc-title">Geospatial & Economic Integration</div>
+          <div class="oc-text">Long-term vision: connecting the system to real-time local food environment data — grocery stores, SNAP outlets, food prices — enabling budget-aware, location-specific personalized nutrition. The shift from "eat more vegetables" to "here's where to find affordable vegetables near you."</div>
+        </div>
+      </div>
+      <div class="outcome-card">
+        <div class="oc-icon">🛡️</div>
+        <div>
+          <div class="oc-title">Safety-First AI Nutrition Framework</div>
+          <div class="oc-text">A demonstrated architectural model for building AI nutrition tools that prioritize evidence grounding over generative fluency — directly addressing documented failures in current commercial AI systems and establishing a responsible deployment framework (Stanford & Duke, 2025).</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="f-name">Grace Amaning-Kwarteng · Graduate Researcher, Krishnan Lab</div>
+    <div class="f-meta">University of Arizona · Department of Nutritional Sciences & Wellness</div>
+  </div>
+  <div class="f-right">
+    <div>Dietary assessment · AI in healthcare · Precision nutrition</div>
+    <div style="margin-top: 0.4rem;"><span class="f-accent">College of Agriculture, Life & Environmental Sciences</span></div>
+  </div>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>
